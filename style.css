@@ -2,7 +2,19 @@
     margin: 4%;
 }
 
+.highscore {
+    margin: 4%;
+
+}
+
 .maindiv {
-    flex:content;
+    flex: content;
     margin-left: 30%;
+}
+
+.scorediv {
+    float: left;
+    margin-left: 25%;
+    margin-right: 5%;
+    padding: 5;
 }

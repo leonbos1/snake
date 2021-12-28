@@ -6,11 +6,20 @@ var tailSize = 1;
 var direction = "";
 var snakeArray = [];
 var score = 0;
-
+var speed = 125;
+var interval;
+var highScore = localStorage.getItem("highScore");
+try {
+document.getElementById("highscore").innerHTML = "Highscore: "+highScore;
+}
+catch {console.log("no highscore yet")}
 var positionx = 200;
 var positiony = 200;
 var xFruit = Math.floor(Math.random() * 16) * 50;
 var yFruit = Math.floor(Math.random() * 16) * 50;
+
+var xDegrowFruit = Math.floor(Math.random() * 16) * 50;
+var yDegrowFruit = Math.floor(Math.random() * 16) * 50;
 
 
 window.onload = function() {
@@ -22,7 +31,7 @@ window.onload = function() {
   canvasContext.fillRect(positionx,positiony,50,50);
 
   spawnFruit();
-  setInterval(gameLoop, 1000/10);
+  interval = setInterval(gameLoop, 125);
 }
 
 function spawnFruit() {
@@ -31,10 +40,24 @@ function spawnFruit() {
   yFruit = Math.floor(Math.random() * 16) * 50;
   tailSize++;
   score++;
+  speed -= 5;
+  clearInterval(interval);
+  interval = setInterval(gameLoop, speed);
   }
   
   canvasContext.fillStyle = 'red';
   canvasContext.fillRect(xFruit,yFruit,50,50);
+}
+
+function spawnDegrowFruit() {
+  if (xDegrowFruit == positionx && yDegrowFruit == positiony) {
+  xDegrowFruit = Math.floor(Math.random() * 16) * 50;
+  yDegrowFruit = Math.floor(Math.random() * 16) * 50;
+  tailSize--;
+  }
+  
+  canvasContext.fillStyle = 'green';
+  canvasContext.fillRect(xDegrowFruit,yDegrowFruit,50,50);
 }
 
 function gameLoop() {
@@ -42,6 +65,10 @@ function gameLoop() {
   canvasContext.fillRect(0,0,canvas.width,canvas.height);
 
   spawnFruit(xFruit,yFruit);
+
+  if (score > 4) {
+    spawnDegrowFruit();
+  }
 
   positionx += x;
   positiony += y;
@@ -60,11 +87,18 @@ function gameLoop() {
     positiony = canvas.height;
   }
 
+
+  //death handler
   for (let i = 1; i < snakeArray.length; i++) {
     if (snakeArray[0][0] == snakeArray[i][0] && snakeArray[0][1] == snakeArray[i][1]) {
-      console.log("death");
       tailSize = 1;
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("highScore", JSON.stringify(score));
+        document.getElementById("highscore").innerHTML = "Highscore: "+highScore;
+      }
       score = 0;
+      speed = 125;
       positionx = positiony = 200;
       xFruit = Math.floor(Math.random() * 16) * 50;
       yFruit = Math.floor(Math.random() * 16) * 50;
