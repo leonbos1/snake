@@ -8,11 +8,8 @@ var snakeArray = [];
 var score = 0;
 var speed = 125;
 var interval;
-var highScore = localStorage.getItem("highScore");
-try {
-document.getElementById("highscore").innerHTML = "Highscore: "+highScore;
-}
-catch {console.log("no highscore yet")}
+var highScore = localStorage.getItem("highscore");
+
 var positionx = 200;
 var positiony = 200;
 var xFruit = Math.floor(Math.random() * 16) * 50;
@@ -61,6 +58,7 @@ function spawnDegrowFruit() {
 }
 
 function gameLoop() {
+  document.getElementById("highscore").innerHTML = "Highscore: "+highScore;
   canvasContext.fillStyle='black';
   canvasContext.fillRect(0,0,canvas.width,canvas.height);
 
@@ -94,14 +92,16 @@ function gameLoop() {
       tailSize = 1;
       if (score > highScore) {
         highScore = score;
-        localStorage.setItem("highScore", JSON.stringify(score));
-        document.getElementById("highscore").innerHTML = "Highscore: "+highScore;
+        localStorage.setItem("highscore", score);
+
       }
       score = 0;
       speed = 125;
       positionx = positiony = 200;
       xFruit = Math.floor(Math.random() * 16) * 50;
       yFruit = Math.floor(Math.random() * 16) * 50;
+      clearInterval(interval);
+      interval = setInterval(gameLoop, speed);
     }
   }
   

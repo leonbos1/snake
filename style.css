@@ -1,20 +1,18 @@
 .score {
-    margin: 4%;
+    margin-left: 40%;
 }
 
 .highscore {
-    margin: 4%;
 
+
+    margin-left: 40%;
 }
 
 .maindiv {
-    flex: content;
-    margin-left: 30%;
 }
 
 .scorediv {
-    float: left;
     margin-left: 25%;
-    margin-right: 5%;
-    padding: 5;
+    width: 100%;
+    display: table-row;
 }
